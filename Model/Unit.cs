@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Vegetable_Grocery_MISC.Model
 {
-  public class City
+  public class Unit
   {
     public string id { get; set; }
     public string name { get; set; }

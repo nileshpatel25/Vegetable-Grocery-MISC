@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace Vegetable_Grocery_MISC.Model
 {
-  public class City
+  public class OTPAuthentication
   {
     public string id { get; set; }
-    public string name { get; set; }
-    public string code { get; set; }
+    public string customerid { get; set; }
+    public string customerphone { get; set; }
+    public string otpcode { get; set; }
     public bool deleted { get; set; }
+
   }
 }
