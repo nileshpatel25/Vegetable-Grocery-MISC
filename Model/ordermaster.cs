@@ -7,7 +7,7 @@ namespace Vegetable_Grocery_MISC.Model
 {
   public class ordermaster
   {
-    public string id { get; set; }
+    public string Id { get; set; }
   public string customerid { get; set; }
 
     public string invoiceno { get; set; }
@@ -15,9 +15,9 @@ namespace Vegetable_Grocery_MISC.Model
     public DateTime orderdate { get; set; }
     public string ordertype { get; set; }
     public string status { get; set; }
-    public decimal tax { get; set; }
-    public decimal shippingCharge { get; set; }
-    public decimal discount { get; set; }
+    public double tax { get; set; }
+    public double shippingCharge { get; set; }
+    public double discount { get; set; }
     public string remark { get; set; }
     public bool deleted { get; set; }
     public DateTime createat { get; set; }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Vegetable_Grocery_MISC.Model
+namespace Vegetable_Grocery_MISC.DataModel
 {
-  public class City
+  public class CityRequest
   {
     public string Id { get; set; }
     public string name { get; set; }

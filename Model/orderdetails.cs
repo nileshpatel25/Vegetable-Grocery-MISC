@@ -7,16 +7,16 @@ namespace Vegetable_Grocery_MISC.Model
 {
   public class orderdetails
   {
-    public string id { get; set; }
- public string orderid { get; set; }
+    public string Id { get; set; }
+    public string orderid { get; set; }
     public string productid { get; set; }
-    public decimal quantity { get; set; }
-    public decimal unitprice { get; set; }
-    public decimal discountper { get; set; }
-    public decimal discountprice { get; set; }
+    public double quantity { get; set; }
+    public double unitprice { get; set; }
+    public double discountper { get; set; }
+    public double discountprice { get; set; }
     public string taxslabid { get; set; }
-    public decimal totaltax { get; set; }
-    public decimal totalprice { get; set; }
+    public double totaltax { get; set; }
+    public double totalprice { get; set; }
     public bool deleted { get; set; }
 
   }
