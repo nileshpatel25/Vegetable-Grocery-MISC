@@ -26,14 +26,53 @@ namespace Vegetable_Grocery_MISC.Controllers
       ResponseStatus status = new ResponseStatus();
       try
       {
-
+        var cityname = appDbContex.Cities.Where(a => a.name == cityRequest.name && a.deleted == false).FirstOrDefault();
+        if (cityname == null)
+        {
+          var guId = Guid.NewGuid();
+          City city = new City
+          {
+            Id = guId.ToString(),
+            name = cityRequest.name,
+            code = cityRequest.code,
+            deleted = false
+          };
+          appDbContex.Add(city);
+          await appDbContex.SaveChangesAsync();
+          status.status = true;
+          status.message = "Save successfully!";
+          // status.lstItems = GetAllCity(cityRequest.stateId).Result.lstItems;
+          return status;
+        }
+        else
+        {
+          status.status = false;
+          status.message = "City Already Added!";
+        }
       }
+      catch (Exception ex)
+      {
+        status.status = false;
+        status.message = ex.Message;
+        throw ex;
+      }
+      return status;
+    }
+
+    [HttpGet("AllCity")]
+    public ActionResult getAllCity()
+    {
+      try
+      {
+        List<City> cities = appDbContex.Cities.Where(a=>a.deleted==false).ToList();
+        return Ok(cities);
+      }
+
       catch (Exception ex)
       {
 
         throw ex;
       }
-      return status;
     }
   }
 }
