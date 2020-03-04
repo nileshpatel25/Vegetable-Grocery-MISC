@@ -12,6 +12,8 @@ public string name { get; set; }
     public string code { get; set; }
     public double unitid { get; set; }
     public double categoryid { get; set; }
+    public string subcategoryid { get; set; }
+    public string subsubcategoryid { get; set; }
     public double intaxslabid { get; set; }
     public double price { get; set; }
     public double discountper { get; set; }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Vegetable_Grocery_MISC.Model
+namespace Vegetable_Grocery_MISC.DataModel
 {
-  public class Category
+  public class CategoryRequest
   {
     public string Id { get; set; }
     public string name { get; set; }
@@ -14,6 +14,5 @@ namespace Vegetable_Grocery_MISC.Model
     public string subsubcategoryid { get; set; }
     public string image { get; set; }
     public bool deleted { get; set; }
-
   }
 }

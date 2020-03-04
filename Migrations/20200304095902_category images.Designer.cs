@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vegetable_Grocery_MISC.Model;
 
 namespace Vegetable_Grocery_MISC.Migrations
 {
     [DbContext(typeof(AppDbContex))]
-    partial class AppDbContexModelSnapshot : ModelSnapshot
+    [Migration("20200304095902_category images")]
+    partial class categoryimages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,10 +262,6 @@ namespace Vegetable_Grocery_MISC.Migrations
                     b.Property<double>("price");
 
                     b.Property<double>("quantity");
-
-                    b.Property<string>("subcategoryid");
-
-                    b.Property<string>("subsubcategoryid");
 
                     b.Property<double>("unitid");
 
