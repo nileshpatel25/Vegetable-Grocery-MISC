@@ -19,7 +19,7 @@ namespace Vegetable_Grocery_MISC.Controllers
       this.appDbContex = _appdbContext;
     }
     [HttpPost("AddCategory")]
-    public async Task<ResponseStatus> addCategory(CategoryRequest categoryRequest)
+    public async Task<ResponseStatus> addCategory(CategoryRequest categoryRequest, IFormFile Image)
     {
       ResponseStatus status = new ResponseStatus();
       try
@@ -35,7 +35,7 @@ namespace Vegetable_Grocery_MISC.Controllers
             subsubcategoryid=categoryRequest.subsubcategoryid,          
             name = categoryRequest.name,
             code = categoryRequest.code,
-            image=categoryRequest.image,
+           // image=categoryRequest.image,
             deleted = false
           };
           appDbContex.Add(category);
@@ -73,7 +73,7 @@ namespace Vegetable_Grocery_MISC.Controllers
           category.name = categoryRequest.name;
           category.subcategoryid = categoryRequest.subcategoryid;
           category.subsubcategoryid = categoryRequest.subsubcategoryid;
-          category.image = categoryRequest.image;
+         // category.image = categoryRequest.image;
 
           appDbContex.Update(category);
           await appDbContex.SaveChangesAsync();
@@ -107,5 +107,13 @@ namespace Vegetable_Grocery_MISC.Controllers
         throw ex;
       }
     }
-  }
+
+    [HttpPost("UploadSingleFile")]
+    public async Task<IActionResult> Post(IFormFile file , CategoryRequest categoryRequest)
+    {
+
+      return Ok();
+    }
+
+    }
 }

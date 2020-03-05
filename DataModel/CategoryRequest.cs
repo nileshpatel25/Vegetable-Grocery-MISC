@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,16 @@ namespace Vegetable_Grocery_MISC.DataModel
     public string code { get; set; }
     public string subcategoryid { get; set; }
     public string subsubcategoryid { get; set; }
-    public string image { get; set; }
+    public IFormFile Image { get; set; }
     public bool deleted { get; set; }
   }
+
+//  {
+//	subcategoryid:"",
+//	subsubcategoryid:"",
+//	name:"Category2",
+//	code:"Cat2",
+//	image:""
+
+//}
 }
