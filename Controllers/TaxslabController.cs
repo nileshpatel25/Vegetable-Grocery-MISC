@@ -97,12 +97,15 @@ namespace Vegetable_Grocery_MISC.Controllers
 
     }
     [HttpGet("AllTaxSlabList")]
-    public ActionResult getAllTaxSlab()
+    public async Task<ResponseStatus> getAllTaxSlab()
     {
       try
       {
-        List<TaxSlabMaster> taxSlabMasters = appDbContex.TaxSlabMasters.Where(a => a.deleted == false).ToList();
-        return Ok(taxSlabMasters);
+        ResponseStatus status = new ResponseStatus();
+        status.lstItems = appDbContex.TaxSlabMasters.ToList();
+        status.status = true;
+        return status;
+
       }
 
       catch (Exception ex)

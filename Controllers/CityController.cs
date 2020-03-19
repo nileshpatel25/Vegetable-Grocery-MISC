@@ -60,12 +60,15 @@ namespace Vegetable_Grocery_MISC.Controllers
     }
 
     [HttpGet("AllCity")]
-    public ActionResult getAllCity()
+    public async Task<ResponseStatus>  getAllCity()
     {
       try
       {
-        List<City> cities = appDbContex.Cities.Where(a=>a.deleted==false).ToList();
-        return Ok(cities);
+        ResponseStatus status = new ResponseStatus();
+        status.lstItems = appDbContex.Cities.ToList();
+        status.status = true;
+        return status;
+
       }
 
       catch (Exception ex)

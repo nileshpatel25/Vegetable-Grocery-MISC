@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vegetable_Grocery_MISC.Model;
 using Vegetable_Grocery_MISC.DataModel;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace Vegetable_Grocery_MISC.Controllers
 {
@@ -108,6 +110,62 @@ namespace Vegetable_Grocery_MISC.Controllers
 
     }
 
+    [Route("upload")]
+    [HttpPost, DisableRequestSizeLimit]
+    public async Task<string> UploadFile()
+    {
+      try
+      {
+
+        var file = Request.Form.Files[0];
+        string cid = Convert.ToString(Request.Form["PId"]);
+        string folderName = Path.Combine("Content", "Images\\Product\\" + cid);
+        string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+        if (file.Length > 0)
+        {
+          string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+          string ext = Path.GetExtension(fileName);
+          string fullPath = Path.Combine(pathToSave, String.Concat(cid, ext));
+          string dbPath = Path.Combine(folderName, String.Concat(cid, ext));
+
+          FileInfo fl = new FileInfo(fullPath);
+          if (fl.Exists)
+          {
+            fl.Delete();
+          }
+
+          if (!Directory.Exists(pathToSave))
+          {
+            Directory.CreateDirectory(pathToSave);
+          }
+
+          using (var stream = new FileStream(fullPath, FileMode.Create))
+          {
+            file.CopyTo(stream);
+            await file.CopyToAsync(stream);
+          }
+          Product product = appDbContex.Products.Where(a => a.Id == cid).SingleOrDefault();
+          if (product != null)
+          {
+
+            product.image = dbPath;
+            await appDbContex.SaveChangesAsync();
+          }
+
+
+        }
+
+
+        return "success";
+      }
+      catch (Exception ex)
+      {
+        return "error";
+      }
+    }
+
+
+
     [HttpPost("deleteProduct")]
     public async Task<ResponseStatus> deleteProduct(ProductRequest productRequest)
     {
@@ -137,12 +195,14 @@ namespace Vegetable_Grocery_MISC.Controllers
 
 
     [HttpGet("AllProduct")]
-    public ActionResult getAllProduct()
+    public async Task<ResponseStatus> getAllProduct()
     {
       try
       {
-        List<Product> products = appDbContex.Products.Where(a => a.deleted == false).ToList();
-        return Ok(products);
+        ResponseStatus status = new ResponseStatus();
+        status.lstItems = appDbContex.Products.ToList();
+        status.status = true;
+        return status;
       }
 
       catch (Exception ex)

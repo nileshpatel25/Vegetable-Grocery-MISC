@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vegetable_Grocery_MISC.Model;
 using Vegetable_Grocery_MISC.DataModel;
+using System.IO;
+using System.Net.Http.Headers;
+
 namespace Vegetable_Grocery_MISC.Controllers
 {
     [Route("api/[controller]")]
@@ -19,7 +22,7 @@ namespace Vegetable_Grocery_MISC.Controllers
       this.appDbContex = _appdbContext;
     }
     [HttpPost("AddCategory")]
-    public async Task<ResponseStatus> addCategory(CategoryRequest categoryRequest, IFormFile Image)
+    public async Task<ResponseStatus> addCategory(CategoryRequest categoryRequest)
     {
       ResponseStatus status = new ResponseStatus();
       try
@@ -93,12 +96,16 @@ namespace Vegetable_Grocery_MISC.Controllers
 
 
     [HttpGet("AllCategory")]
-    public ActionResult getAllCategory()
+    public async Task<ResponseStatus> getAllCategory()
     {
       try
       {
-        List<Category> categories = appDbContex.Categories.Where(a => a.deleted == false).ToList();
-        return Ok(categories);
+
+        ResponseStatus status = new ResponseStatus();
+        status.lstItems = appDbContex.Categories.ToList();
+        status.status = true;
+        return status;
+      
       }
 
       catch (Exception ex)
@@ -108,12 +115,59 @@ namespace Vegetable_Grocery_MISC.Controllers
       }
     }
 
-    [HttpPost("UploadSingleFile")]
-    public async Task<IActionResult> Post(IFormFile file , CategoryRequest categoryRequest)
+    [Route("upload")]
+    [HttpPost, DisableRequestSizeLimit]
+    public async Task<string> UploadFile()
     {
+      try
+      {
 
-      return Ok();
+        var file = Request.Form.Files[0];
+        string cid = Convert.ToString(Request.Form["CId"]);
+        string folderName = Path.Combine("Content", "Images\\Category\\" + cid);
+        string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+        if (file.Length > 0)
+        {
+          string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+          string ext = Path.GetExtension(fileName);
+          string fullPath = Path.Combine(pathToSave, String.Concat(cid, ext));
+          string dbPath = Path.Combine(folderName, String.Concat(cid, ext));
+
+          FileInfo fl = new FileInfo(fullPath);
+          if (fl.Exists)
+          {
+            fl.Delete();
+          }
+
+          if (!Directory.Exists(pathToSave))
+          {
+            Directory.CreateDirectory(pathToSave);
+          }
+
+          using (var stream = new FileStream(fullPath, FileMode.Create))
+          {
+            file.CopyTo(stream);
+            await file.CopyToAsync(stream);
+          }
+          Category category = appDbContex.Categories.Where(a => a.Id == cid).SingleOrDefault();
+          if (category != null)
+          {
+
+            category.image = dbPath;
+            await appDbContex.SaveChangesAsync();
+          }
+
+
+        }
+
+
+        return "success";
+      }
+      catch (Exception ex)
+      {
+        return "error";
+      }
     }
 
-    }
+  }
 }

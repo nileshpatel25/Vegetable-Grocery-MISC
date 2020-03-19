@@ -89,12 +89,15 @@ namespace Vegetable_Grocery_MISC.Controllers
 
 
     [HttpGet("AllUnitList")]
-    public ActionResult getAllUnit()
+    public async Task<ResponseStatus> getAllUnit()
     {
       try
       {
-        List<Unit> units = appDbContex.Units.Where(a => a.deleted == false).ToList();
-        return Ok(units);
+        ResponseStatus status = new ResponseStatus();
+        status.lstItems = appDbContex.Categories.ToList();
+        status.status = true;
+        return status;
+
       }
 
       catch (Exception ex)

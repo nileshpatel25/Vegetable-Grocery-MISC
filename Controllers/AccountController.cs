@@ -74,7 +74,7 @@ namespace Vegetable_Grocery_MISC.Controllers
 
     }
 
-    [AllowAnonymous]
+   
     [HttpPost("login")]
     public async Task<ResponseStatus> Login(LoginRequest loginRequest)
     {
