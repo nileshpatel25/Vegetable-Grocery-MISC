@@ -7,5 +7,6 @@ namespace Vegetable_Grocery_MISC.Model
 {
     public class City
     {
+        public string id { get; set; }
     }
 }
