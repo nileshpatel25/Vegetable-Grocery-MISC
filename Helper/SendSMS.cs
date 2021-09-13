@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apiGreenShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,11 +9,25 @@ namespace apiGreenShop.Helper
 {
     public class SendSMS
     {
+        public ApplicationDbContext appDbContex { get; }
+        public SendSMS()
+        {
+            this.appDbContex = new ApplicationDbContext();
+            // this.memoryCache = memoryCache;
+        }
+
         public void SendTextSms(string _Message, string _strMobile)
         {
+            
 
             try
             {
+                string smslink = string.Empty;
+                var sms = appDbContex.SMSLinks.Where(a => a.code == "SMS").SingleOrDefault();
+                if (sms != null)
+                {
+                    smslink = sms.link;
+                }
 
                 //ServicePointManager.Expect100Continue = true;
                 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -24,8 +39,8 @@ namespace apiGreenShop.Helper
                     string to, message;
                     to = _strMobile;
                     message = _Message;
-                    //string baseURL = "http://www.txtguru.in/imobile/api.php?username=secinverse&password=Sec@2020&source=BALVEG&dmobile=" + _strMobile + "&message=" + _Message + "";
-                    //client.OpenRead(baseURL);
+                    string baseURL = "" + smslink +" &dmobile=" + _strMobile + "&message=" + _Message + "";
+                    client.OpenRead(baseURL);
                 }
 
 
